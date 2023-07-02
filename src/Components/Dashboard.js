@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import MasterPassword from './MasterPassword';
+import axios from 'axios';
 
 const Dashboard = () => {
   const [siteName, setSiteName] = useState('');
@@ -22,9 +23,30 @@ const Dashboard = () => {
   };
 
   const handleMasterPasswordSubmit = (masterPassword) => {
-    // Perform validation or any necessary logic with the master password
-    console.log('Master Password submitted:', masterPassword);
     setShowMasterPasswordPopup(false);
+  
+    const userId = 1; // Replace with the ID of the user you want to update
+    const passwordUpdateEndpoint = `${window.location.origin}/wp-json/wp/v2/users/${userId}`;
+    
+    const nonce = myPluginData.nonce; // Replace with the authentication nonce obtained in the frontend
+  
+    axios
+      .post(passwordUpdateEndpoint, 
+        {
+          userId: userId,
+          master_password: masterPassword
+        }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-WP-Nonce': nonce
+        }
+      })
+      .then(response => {
+        console.log('User updated successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('Error updating user:', error);
+      });
   };
 
   return (

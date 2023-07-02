@@ -32,6 +32,7 @@ const MasterPassword = ({ onSubmit }) => {
     setShowPassword(!showPassword);
   };
 
+  
 
   return (
     <Container>
