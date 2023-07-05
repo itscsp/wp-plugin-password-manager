@@ -34,3 +34,5 @@ require_once WPRK_PATH . 'classes/class-create-admin-menu.php';
 require_once WPRK_PATH . 'classes/class-create-tables.php';
 require_once WPRK_PATH . 'classes/class-api-endpoints.php';
 
+
+/* Now every time data insert into tables*/
