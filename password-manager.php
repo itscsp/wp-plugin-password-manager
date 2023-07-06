@@ -27,7 +27,7 @@ add_action('admin_menu', 'my_plugin_menu');
 // Callback function to display the plugin page
 function my_plugin_page_callback() {
   echo '<div class="wrap">';
-  echo '<h1>Plugin Dashboard</h1>';
+  echo '<h1>Password Manager</h1>';
   echo '<div id="root"></div>';
   echo '</div>';
 }
