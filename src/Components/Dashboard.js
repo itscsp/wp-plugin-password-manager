@@ -1,18 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import MasterPassword from './MasterPassword';
-import axios from 'axios';
+import InfoDashboard from './InfoDashboard';
 
 const Dashboard = () => {
   const [siteName, setSiteName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [note, setNote] = useState('');
-  const [showMasterPasswordPopup, setShowMasterPasswordPopup] = useState(true);
+  const [showMasterPasswordPopup, setShowMasterPasswordPopup] = useState(false);
+  const [validuser, setValiduser] = useState(false);
+  const [credentials, setCredentials] = useState([]);
+
+  useEffect(() => {
+    if(!validuser){
+      setShowMasterPasswordPopup(true);
+    }
+  }, []);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowMasterPasswordPopup(true);
+    if (siteName && username && password) {
+      const newCredential = {
+        siteName: siteName,
+        username: username,
+        password: password,
+        note: note,
+      };
+      setCredentials([...credentials, newCredential]);
+      setSiteName('');
+      setUsername('');
+      setPassword('');
+      setNote('');
+      setShowMasterPasswordPopup(true);
+    }
   };
 
   const handleCancel = () => {
@@ -24,118 +46,120 @@ const Dashboard = () => {
 
   const handleMasterPasswordSubmit = (masterPassword) => {
     setShowMasterPasswordPopup(false);
-  
-    const userId = 1; // Replace with the ID of the user you want to update
-    const passwordUpdateEndpoint = `${window.location.origin}/wp-json/wp/v2/users/${userId}`;
-    
-    const nonce = myPluginData.nonce; // Replace with the authentication nonce obtained in the frontend
-  
-    axios
-      .post(passwordUpdateEndpoint, 
-        {
-          userId: userId,
-          master_password: masterPassword
-        }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': nonce
-        }
-      })
-      .then(response => {
-        console.log('User updated successfully:', response.data);
-      })
-      .catch(error => {
-        console.error('Error updating user:', error);
-      });
+    setValiduser(true);
   };
+
 
   return (
     <Container>
-      {showMasterPasswordPopup && (
+      {!validuser ? (
         <Overlay>
           <Popup>
             <MasterPassword onSubmit={handleMasterPasswordSubmit} />
           </Popup>
         </Overlay>
+      ) : (
+        <>
+          <FormContainer>
+            <FormHeader>ADD NEW SITE CREDENTIALS</FormHeader>
+            <Form onSubmit={handleSubmit}>
+              <FormField>
+                <Label htmlFor="siteName">Site URL Name:</Label>
+                <Input
+                  type="text"
+                  id="siteName"
+                  value={siteName}
+                  onChange={(e) => setSiteName(e.target.value)}
+                  required
+                />
+              </FormField>
+              <FormField>
+                <Label htmlFor="username">Username:</Label>
+                <Input
+                  type="text"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </FormField>
+              <FormField>
+                <Label htmlFor="password">Password:</Label>
+                <Input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </FormField>
+              <FormField>
+                <Label htmlFor="note">Note:</Label>
+                <TextArea
+                  id="note"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </FormField>
+              <ButtonContainer>
+                <CancelButton type="button" onClick={handleCancel}>
+                  Cancel
+                </CancelButton>
+                <AddButton type="submit">Add</AddButton>
+              </ButtonContainer>
+            </Form>
+          </FormContainer>
+          <InfoDashboardContainer>
+            <InfoDashboard credentials={credentials} />
+          </InfoDashboardContainer>
+        </>
       )}
-      {!showMasterPasswordPopup && (
-        <FormContainer>
-          <FormHeader>ADD NEW SITE CREDENTIALS</FormHeader>
-          <Form onSubmit={handleSubmit}>
-            <FormField>
-              <Label htmlFor="siteName">Site URL Name:</Label>
-              <Input
-                type="text"
-                id="siteName"
-                value={siteName}
-                onChange={(e) => setSiteName(e.target.value)}
-                required
-              />
-            </FormField>
-            <FormField>
-              <Label htmlFor="username">Username:</Label>
-              <Input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </FormField>
-            <FormField>
-              <Label htmlFor="password">Password:</Label>
-              <Input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </FormField>
-            <FormField>
-              <Label htmlFor="note">Note:</Label>
-              <TextArea
-                id="note"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-              />
-            </FormField>
-            <ButtonContainer>
-              <CancelButton type="button" onClick={handleCancel}>
-                Cancel
-              </CancelButton>
-              <AddButton type="submit">Add</AddButton>
-            </ButtonContainer>
-          </Form>
-        </FormContainer>
-      )}
-
-
     </Container>
   );
 };
 
-
 export default Dashboard;
 
-
+/* Styles for Dashboard component */
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Popup = styled.div`
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
 `;
 
 const FormContainer = styled.div`
-  max-width: 400px;
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  padding: 20px;
+  width: 400px;
 `;
 
 const FormHeader = styled.h2`
-  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
 const Form = styled.form`
@@ -144,78 +168,71 @@ const Form = styled.form`
 `;
 
 const FormField = styled.div`
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 `;
 
 const Label = styled.label`
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-size: 14px;
+  margin-bottom: 5px;
 `;
 
 const Input = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 8px;
   font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 `;
 
-
 const TextArea = styled.textarea`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 8px;
   font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  min-height: 80px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #2196f3;
+const CancelButton = styled.button`
+  padding: 8px 15px;
+  margin-right: 10px;
+  background-color: gray;
+  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+`;
+
+const AddButton = styled.button`
+  padding: 8px 15px;
+  background-color: #4caf50;
   color: #fff;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+const InfoDashboardContainer = styled.div`
+  margin-top: 20px;
+`;
+
+const AddCredentialsButton = styled.button`
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 
   &:hover {
-    background-color: #0c7cd5;
+    background-color: #0056b3;
   }
-`;
-
-const CancelButton = styled(Button)`
-  background-color: #e0e0e0;
-  margin-right: 8px;
-
-  &:hover {
-    background-color: #c4c4c4;
-  }
-`;
-
-const AddButton = styled(Button)`
-  background-color: #43b581;
-`;
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Popup = styled.div`
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  width:500px;
 `;
