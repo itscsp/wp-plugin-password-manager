@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import MasterPassword from './MasterPassword';
 import InfoDashboard from './InfoDashboard';
@@ -8,8 +8,16 @@ const Dashboard = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [note, setNote] = useState('');
-  const [showMasterPasswordPopup, setShowMasterPasswordPopup] = useState(true);
+  const [showMasterPasswordPopup, setShowMasterPasswordPopup] = useState(false);
+  const [validuser, setValiduser] = useState(false);
   const [credentials, setCredentials] = useState([]);
+
+  useEffect(() => {
+    if(!validuser){
+      setShowMasterPasswordPopup(true);
+    }
+  }, []);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,11 +48,13 @@ const Dashboard = () => {
     // Perform validation or any necessary logic with the master password
     console.log('Master Password submitted:', masterPassword);
     setShowMasterPasswordPopup(false);
+    setValiduser(true);
   };
+
 
   return (
     <Container>
-      {showMasterPasswordPopup && credentials.length > 0 ? (
+      {!validuser ? (
         <Overlay>
           <Popup>
             <MasterPassword onSubmit={handleMasterPasswordSubmit} />
