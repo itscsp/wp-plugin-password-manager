@@ -37,14 +37,13 @@ const MasterPassword = ({ onSubmit }) => {
 
   return (
     <Container>
-      <Title>Master Password</Title>
       <Form onSubmit={handleSubmit}>
         <FormGroup>
-          <InputLabel htmlFor="masterPassword">Enter Master Password:</InputLabel>
           <MasterPasswordWrapper>
             <Input
               type={showPassword ? 'text' : 'password'}
               id="masterPassword"
+              placeholder='Enter master password'
               value={masterPassword}
               onChange={(e) => setMasterPassword(e.target.value)}
               required
@@ -65,7 +64,11 @@ export default MasterPassword;
 
 const Container = styled.div`
   text-align: center;
-  max-width:500px;
+  border-radius:10px;
+  padding:20px;
+  max-width:100%;
+  margin:auto;
+  background:#292a2d;
 `;
 
 const Title = styled.h2`
@@ -74,7 +77,6 @@ const Title = styled.h2`
 
 const Form = styled.form`
   display: flex;
-  flex-direction: column;
   align-items: center;
    gap: 15px;
   
@@ -82,24 +84,22 @@ const Form = styled.form`
 
 const FormGroup = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 15px;
   width:100%;
   `;
   
 const MasterPasswordWrapper = styled.div`
-  position: relative;
+  position:relative;
+  width:100%;
 `;
 
-const InputLabel = styled.label`
-  font-size: 16px;
-`;
 
 const Input = styled.input`
   padding: 10px;
   font-size: 14px;
   height:50px;
   width:100%;
+  border-radius:10px;
 `;
 
 
@@ -119,16 +119,18 @@ const ErrorLabel = styled.span`
 
 const SubmitButton = styled.button`
   displsay:block;
-  padding: 15px 20px;
-  background-color: #007bff;
-  color: #fff;
+  padding: 13px 20px;
+  background-color: #fff;
+  color: #292a2d;
   font-size: 16px;
   border: none;
   cursor: pointer;
-   width:100%;
-   border-radius:10px;
+  border-radius:10px;
+  border:1px solid;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #292a2d;
+    color:#fff;
+    border-color:#fff;
   }
 `;
