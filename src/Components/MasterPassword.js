@@ -13,6 +13,7 @@ const MasterPassword = ({ onSubmit }) => {
       onSubmit(masterPassword);
       setError('');
     }
+   
   };
 
   const validatePassword = () => {

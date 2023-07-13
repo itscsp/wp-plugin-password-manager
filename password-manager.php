@@ -19,7 +19,7 @@ define('WPRK_URL', trailingslashit(plugins_url('/', __FILE__)));
 // Enqueue the bundled JavaScript file
 function my_plugin_enqueue_scripts()
 {
-  wp_enqueue_script('my-plugin', plugins_url('dist/bundle.js', __FILE__), array(), '1.0.0', true);
+  wp_enqueue_script('my-plugin', plugins_url('dist/bundle.js', __FILE__), array('wp-api'), time(), true);
 
   wp_localize_script('my-plugin', 'myPluginData', array(
     'root_url' => get_site_url(),
@@ -28,6 +28,16 @@ function my_plugin_enqueue_scripts()
 }
 add_action('admin_enqueue_scripts', 'my_plugin_enqueue_scripts');
 
+
+register_meta(
+  'user',
+  'master_password',
+  array(
+      'show_in_rest' => true,
+      'single' => true,
+      'type' => 'string',
+  )
+);
 
 // Create a menu item in the admin dashboard
 require_once WPRK_PATH . 'classes/class-create-admin-menu.php';

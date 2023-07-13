@@ -27,8 +27,6 @@ class WPPM_Create_Admin_Page {
     public function password_manager_template() {
         echo '<div class="wrap">';
         echo '<h1>Password Manager</h1>';
-        insert_data_form();
-        show_data();
         echo '<div id="root"></div>';
         echo '</div>';
     }
