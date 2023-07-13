@@ -9,23 +9,27 @@ const Dashboard = () => {
   const [password, setPassword] = useState('');
   const [note, setNote] = useState('');
   const [showMasterPasswordPopup, setShowMasterPasswordPopup] = useState(false);
-  const [validuser, setValiduser] = useState(false);
+  const [validuser, setValiduser] = useState(true);
   const [credentials, setCredentials] = useState([]);
 
   useEffect(() => {
-
     // Checking current 
-    let currentUser = new wp.api.models.User({ id: 1 });
+    let currentUser = new wp.api.models.User({ id: 2 });
     currentUser.fetch(
       {
         data: {
-          "_fields": "id, meta",
+          "_fields": "id, name, meta",
         },
       }
     ).done(function (user) {
+    
+      if(user.meta.master_password != ''){
         setValiduser(true);
+      }else{
+        setValiduser(false);
+      }
       }).fail(function (xhr) {
-        console.error(xhr);
+        setValiduser(false);
       });
 
     if (!validuser) {
@@ -63,7 +67,7 @@ const Dashboard = () => {
   const handleMasterPasswordSubmit = (masterPassword) => {
     // Using backboneJS we create post request
     const user = new wp.api.models.User({
-      id: 1,
+      id: 2,
       meta: {
         master_password: masterPassword,
       },
