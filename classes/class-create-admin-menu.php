@@ -14,7 +14,6 @@ class WPPM_Create_Admin_Page
         add_action('init', [$this, 'create_meta_data']);
         add_action('admin_enqueue_scripts', [$this, 'pass_user_id']);
         add_action('init', [$this, 'create_custom_post_type']);
-        // add_action('rest_api_init', [$this, 'add_authentication_to_api']);
     }
 
     public function create_admin_menu()
@@ -37,7 +36,8 @@ class WPPM_Create_Admin_Page
         // Pass data to the JavaScript file using wp_localize_script.
         wp_localize_script('my-password_manager', 'localized_data', array(
             'root_url' => get_site_url(),
-            'current_user_id' => get_current_user_id()
+            'current_user_id' => get_current_user_id(),
+            'nonce' => wp_create_nonce('wp_rest'),
         ));
     }
 
@@ -67,8 +67,8 @@ class WPPM_Create_Admin_Page
                     'name'          => __('Passwords'),
                     'singular_name' => __('Password')
                 ),
-                'public'             => false, // Hides the post type from the frontend
-                'show_ui'            => false, // Hides the post type from the admin UI
+                'public'             => true, // Hides the post type from the frontend
+                'show_ui'            => true, // Hides the post type from the admin UI
                 'exclude_from_search' => true, // Hides the post type from search
                 'show_in_rest' => false,
                 'supports'     => array(
@@ -129,7 +129,9 @@ class WPPM_Create_Admin_Page
         }
     }
 
-    
+    //Force notes posts to be private
+
+
 
 
     public function password_manager_template()
