@@ -137,6 +137,7 @@ class WPPM_Create_Admin_Page
     public function password_manager_template()
     {
         echo '<div class="wrap">';
+        echo ' <div id="overlays"></div>';
         echo '<div id="root"></div>';
         echo '</div>';
     }

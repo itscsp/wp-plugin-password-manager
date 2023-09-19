@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
+:root {
+  --primary-text-color: rgb(232, 234, 237);
+  --primary-dark: #292a2d;
+  --primary-dark-hover: #3f3f3f;
+  --secondary-dark: #4b4b4b;
+  --btn-bg: #4b4b4b;
+  --btn-bg-hover: #3f3f3f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+body.toplevel_page_password-manager  {
+  background-color: var(--primary-dark);
+  color: var(--primary-text-color);
+}
+
+.container {
+  max-width: calc(700px);
+  width: calc(100% - 20px);
+  margin: 40px auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+h1, h2, h3 {
+  color: var(--primary-text-color);;
+}

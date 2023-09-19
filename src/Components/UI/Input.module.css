@@ -1,0 +1,29 @@
+.inputWrapper {
+  position: relative;
+}
+
+.inputWrapper {
+  background: #fff;
+  border: none;
+  overflow: hidden;
+  margin-bottom: 0px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.inputWrapper .actionbtn button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  padding: 5px 5px 1px 8px;
+  border-radius: 0 !important;
+  transform: translate(0px, -50%);
+}
+
+.inputWrapper .actionbtn button:first-child {
+  right: 0 !important;
+}
+
+.inputWrapper .actionbtn button:last-child {
+  right: 37px;
+}

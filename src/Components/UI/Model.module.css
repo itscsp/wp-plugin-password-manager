@@ -1,0 +1,66 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 160px;
+    width: calc(100% - 160px);
+    height: 100vh;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal {
+  position: fixed;
+  top: 20vh;
+  width: 40rem;
+  left: calc(50% - 240px);
+  
+  background-color: var(--primary-dark);
+  padding: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+  animation: slide-down 300ms ease-out forwards;
+  color: var(--primary-text-color);
+}
+
+@media only screen and (max-width: 960px) {
+    
+    .backdrop {
+       
+        left: 36px;
+        width: calc(100% - 36px);
+        
+    }
+    
+    .modal {
+      left: calc(50% - 302px);
+    }
+    
+}
+
+@media screen and (max-width: 782px) {
+    .backdrop {
+       
+        left: 0;
+        width: calc(100%);
+        
+    }
+    
+    .modal {
+        left: calc(50% - 325px);
+        width: calc(100% - 20px);
+        left: 10px;
+    }
+    
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
